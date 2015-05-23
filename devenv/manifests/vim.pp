@@ -1,3 +1,4 @@
+include vimrc
 include vundle
 include zenburn
 
