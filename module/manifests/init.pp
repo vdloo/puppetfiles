@@ -38,5 +38,6 @@ class init {
       provider => git,
       source => 'git://github.com/vdloo/dotfiles.git',
       user => 'vdloo',
+      owner => 'vdloo',
     }
 }
