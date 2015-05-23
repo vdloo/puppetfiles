@@ -1,5 +1,6 @@
 include users
-include init
+include default_packages
+include dotfiles
 
 class users {
     user { 
@@ -15,13 +16,17 @@ class users {
     }
 }
 
-class init {
+class update_apt {
     exec { 'apt-key update':
 	command => '/usr/bin/apt-key update'
     }
     exec { 'apt-get update':
 	command => '/usr/bin/apt-get update'
     }
+}
+
+class default_packages {
+    require update_apt
     $packages = [
         'curl',
         'git',
@@ -31,8 +36,11 @@ class init {
     ]
     package { $packages: 
 	ensure => 'installed',
-	require => Exec['apt-get update'],
     }
+}
+
+class dotfiles {
+    require users
     vcsrepo { '/home/vdloo/.dotfiles':
       ensure   => latest,
       provider => git,
