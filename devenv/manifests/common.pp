@@ -17,6 +17,13 @@ class users {
 }
 
 class update_apt {
+    $packages = [
+	'debian-keyring',
+	'debian-archive-keyring',
+    ]
+    package { $packages: 
+	ensure => 'installed',
+    }
     exec { 'apt-key update':
 	command => '/usr/bin/apt-key update'
     }
