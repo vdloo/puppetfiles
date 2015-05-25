@@ -1,6 +1,6 @@
 class debian {
     require keyring_packages
-    include _debianlike
+    include debianlike
 }
 class keyring_packages {
     $packages = [

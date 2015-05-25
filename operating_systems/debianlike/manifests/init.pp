@@ -1,4 +1,4 @@
-class _debianlike {
+class debianlike {
     include update_apt
 }
 class update_apt {

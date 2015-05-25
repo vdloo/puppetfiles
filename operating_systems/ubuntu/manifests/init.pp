@@ -1,3 +1,3 @@
 class ubuntu {
-    include _debianlike
+    include debianlike
 }
