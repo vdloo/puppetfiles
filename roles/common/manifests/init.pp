@@ -28,7 +28,6 @@ class default_packages {
         'git',
         'screen',
         'xclip',
-	'vim-nox'
     ]
     package { $packages: 
 	ensure => 'installed',
