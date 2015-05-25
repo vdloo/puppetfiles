@@ -3,6 +3,7 @@ class archlinux {
 }
 class update_pacman {
     exec { 'pacman full system upgrade':
-	command => '/usr/bin/pacman -Syyu --noconfirm'
+	command => '/usr/bin/pacman -Syyu --noconfirm',
+	timeout => 3600
     }
 }
