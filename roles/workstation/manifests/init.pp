@@ -1,0 +1,3 @@
+class workstation {
+    include dwm
+}
