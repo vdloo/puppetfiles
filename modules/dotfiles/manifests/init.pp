@@ -1,5 +1,4 @@
 class dotfiles {
-    require nonroot
     vcsrepo { '/home/vdloo/.dotfiles':
       ensure   => latest,
       provider => git,
