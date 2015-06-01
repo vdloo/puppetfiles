@@ -20,6 +20,7 @@ class setgitconfig {
     }
     exec { 'set git user name':
 	command => '/bin/su - vdloo -c "/usr/bin/git config --global user.name \'Rick van de Loo\'"',
+    }
     exec { 'set git editor':
 	command => '/bin/su - vdloo -c "/usr/bin/git config --global core.editor \'vim\'"',
     }
