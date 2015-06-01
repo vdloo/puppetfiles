@@ -9,7 +9,7 @@ class createnonrootuser {
 	ensure => present,
 	shell => '/bin/bash',
 	managehome => 'true',
-	password => generate('/bin/sh', '-c', "mkpasswd -m sha-512 toor | tr -d '\n'"),
+	password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
     }
 }
 
