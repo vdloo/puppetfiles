@@ -28,7 +28,6 @@ class default_packages {
         'git',
         'screen',
         'xclip',
-	'whois',  # mkpasswd is part of the whois package
     ]
     package { $packages: 
 	ensure => 'installed',
