@@ -3,6 +3,7 @@ class dwm {
     require dwmrepo
     require fibonacci
     require gaplessgrid
+    require dwmdeps
     exec { 'build dwm':
 	command => '/usr/bin/make clean',
 	cwd => '/home/vdloo/.dwm/'
@@ -51,4 +52,31 @@ class gaplessgrid {
 	cwd => '/home/vdloo/.dwm/'
     }
     require [ wget, dwmrepo ]
+}
+
+class dwmdeps {
+    $libx11 = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libx11-dev',
+	default => 'libX11',
+    }
+    package { "$libx11":
+	ensure => 'installed',
+	alias => 'libx11',
+    }
+    $libxft = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libxft-dev',
+	default => 'libxft',
+    }
+    package { "$libxft":
+	ensure => 'installed',
+	alias => 'libxft',
+    }
+    $libxinerama = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libxinerama-dev',
+	default => 'libxinerama',
+    }
+    package { "$libxinerama":
+	ensure => 'installed',
+	alias => 'libxinerama',
+    }
 }
