@@ -4,6 +4,7 @@ class common {
     include dotfiles
     include vim	
     include default_password
+    include update_puppetfiles
 }
 
 class os {
@@ -40,5 +41,14 @@ class default_packages {
     ]
     package { $packages: 
 	ensure => 'installed',
+    }
+}
+
+class update_puppetfiles {
+    vcsrepo { '/usr/etc/puppetfiles':
+      ensure   => latest,
+      provider => git,
+      source => 'https://github.com/vdloo/puppetfiles',
+      revision => 'HEAD',
     }
 }
