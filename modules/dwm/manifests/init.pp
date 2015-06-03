@@ -79,4 +79,15 @@ class dwmdeps {
 	ensure => 'installed',
 	alias => 'libxinerama',
     }
+    $xorg = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'xorg',
+	default => 'xorg-server',
+    }
+    package { "$xorg":
+	ensure => 'installed',
+	alias => 'xorg',
+    }
+    package { "dmenu":
+	ensure => 'installed',
+    }
 }
