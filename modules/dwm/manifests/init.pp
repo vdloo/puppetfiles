@@ -1,6 +1,7 @@
+include dwm
 class dwm {
     require nonroot
-    require dwmrepo
+    require refresh_dwm_repo
     require fibonacci
     require gaplessgrid
     require dwmdeps
@@ -15,7 +16,7 @@ class dwm {
     }
 }
 
-class dwmrepo {
+class clone_dwm_repo {
     vcsrepo { '/home/vdloo/.dwm':
       ensure   => latest,
       provider => git,
@@ -24,7 +25,11 @@ class dwmrepo {
       owner => 'vdloo',
       revision => 'HEAD',
     }
-    exec { 'git clean dwmrepo':
+}
+
+class refresh_dwm_repo {
+    require clone_dwm_repo
+    exec { 'git clean dwm repo':
 	command => '/usr/bin/git clean -f',
 	cwd => '/home/vdloo/.dwm/'
     }
@@ -42,7 +47,7 @@ class fibonacci {
 	command => '/usr/bin/patch < fibonacci.diff -f',
 	cwd => '/home/vdloo/.dwm/'
     }
-    require [ wget, dwmrepo ]
+    require [ wget, refresh_dwm_repo ]
 }
 
 class gaplessgrid {
@@ -57,11 +62,11 @@ class gaplessgrid {
 	command => '/usr/bin/patch < gapless_grid.diff -f',
 	cwd => '/home/vdloo/.dwm/'
     }
-    require [ wget, dwmrepo ]
+    require [ wget, refresh_dwm_repo ]
 }
 
 class config_h {
-    require [ dwmrepo, fibonacci, gaplessgrid ]
+    require [ refresh_dwm_repo, fibonacci, gaplessgrid ]
     file { "/home/vdloo/.dwm/config.h":
 	ensure => 'link',
 	target => "/home/vdloo/.dotfiles/code/configs/dwm/arch-config.h",
