@@ -4,6 +4,7 @@ class dwm {
     require fibonacci
     require gaplessgrid
     require dwmdeps
+    require config_h
     exec { 'build dwm':
 	command => '/usr/bin/make clean',
 	cwd => '/home/vdloo/.dwm/'
@@ -21,6 +22,11 @@ class dwmrepo {
       source => 'http://git.suckless.org/dwm',
       user => 'vdloo',
       owner => 'vdloo',
+      revision => 'HEAD',
+    }
+    exec { 'git clean dwmrepo':
+	command => '/usr/bin/git clean -f',
+	cwd => '/home/vdloo/.dwm/'
     }
 }
 
@@ -52,6 +58,14 @@ class gaplessgrid {
 	cwd => '/home/vdloo/.dwm/'
     }
     require [ wget, dwmrepo ]
+}
+
+class config_h {
+    require [ dwmrepo, fibonacci, gaplessgrid ]
+    file { "/home/vdloo/.dwm/config.h":
+	ensure => 'link',
+	target => "/home/vdloo/.dotfiles/code/configs/dwm/arch-config.h",
+    }
 }
 
 class dwmdeps {
