@@ -1,6 +1,7 @@
 class nonroot {
     include createnonrootuser
     include setgitconfig
+    include sudo
     include visudo
 }
 
