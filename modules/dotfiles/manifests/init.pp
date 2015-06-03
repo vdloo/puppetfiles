@@ -26,4 +26,9 @@ class linkdotfiles {
 	target => '/home/vdloo/.dotfiles/.Xdefaults',
 	owner => 'vdloo',
     }
+    file { '/home/vdloo/.xinitrc':
+	ensure => 'link',
+	target => '/home/vdloo/.dotfiles/.xinitrc',
+	owner => 'vdloo',
+    }
 }
