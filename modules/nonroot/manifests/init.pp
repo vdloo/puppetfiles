@@ -1,6 +1,7 @@
 class nonroot {
     include createnonrootuser
     include setgitconfig
+    include visudo
 }
 
 class createnonrootuser {
@@ -23,5 +24,12 @@ class setgitconfig {
     }
     exec { 'set git editor':
 	command => '/bin/su - vdloo -c "/usr/bin/git config --global core.editor \'vim\'"',
+    }
+}
+
+class visudo {
+    sudo::conf{ 'vdloo':
+        ensure => present,
+        content => 'vdloo ALL=(ALL) ALL',
     }
 }
