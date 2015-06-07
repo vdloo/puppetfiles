@@ -35,6 +35,8 @@ class vundle {
 }
 
 class zenburn {
+    require wget
+    require createdotvim
     file { '/home/vdloo/.vim/colors':
 	ensure => 'directory',
 	owner => 'vdloo',
@@ -46,5 +48,4 @@ class zenburn {
 	verbose => false,
 	execuser => 'vdloo',
     }
-    require [ wget, createdotvim ]
 }
