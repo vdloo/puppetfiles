@@ -25,6 +25,14 @@ class default_password {
 
 class default_packages {
     require os
+    $buildessential = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'build-essential',
+	default => 'base-devel',
+    }
+    package { "buildessential":
+	ensure => 'installed',
+	alias => 'buildessential',
+    }
     $vim = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'vim-nox',
 	default => 'vim',
