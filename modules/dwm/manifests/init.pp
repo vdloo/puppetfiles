@@ -58,7 +58,8 @@ class fibonacci {
 	command => '/usr/bin/patch < fibonacci.diff -f',
 	cwd => '/home/vdloo/.dwm/'
     }
-    require [ fetch_patches, refresh_dwm_repo ]
+    require fetch_patches
+    require refresh_dwm_repo
 }
 
 class gaplessgrid {
@@ -66,11 +67,14 @@ class gaplessgrid {
 	command => '/usr/bin/patch < gapless_grid.diff -f',
 	cwd => '/home/vdloo/.dwm/'
     }
-    require [ fetch_patches, refresh_dwm_repo ]
+    require fetch_patches
+    require refresh_dwm_repo
 }
 
 class config_h {
-    require [ refresh_dwm_repo, fibonacci, gaplessgrid ]
+    require refresh_dwm_repo
+    require fibonacci
+    require gaplessgrid
     file { "/home/vdloo/.dwm/config.h":
 	ensure => 'link',
 	target => "/home/vdloo/.dotfiles/code/configs/dwm/arch-config.h",
