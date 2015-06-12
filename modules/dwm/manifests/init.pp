@@ -37,6 +37,8 @@ class refresh_dwm_repo {
 
 class fetch_patches {
     require wget
+    require clone_dwm_repo
+    require refresh_dwm_repo
     wget::fetch { 'download dwm fibonacci patch':
         source => 'http://dwm.suckless.org/patches/dwm-5.8.2-fibonacci.diff',
 	destination => '/home/vdloo/.dwm/fibonacci.diff',
