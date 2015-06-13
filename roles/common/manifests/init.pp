@@ -57,6 +57,6 @@ class update_puppetfiles {
       ensure   => latest,
       provider => git,
       source => 'https://github.com/vdloo/puppetfiles',
-      revision => 'HEAD',
+      revision => 'master',
     }
 }

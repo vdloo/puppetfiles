@@ -23,7 +23,7 @@ class clone_dwm_repo {
       source => 'http://git.suckless.org/dwm',
       user => 'vdloo',
       owner => 'vdloo',
-      revision => 'HEAD',
+      revision => 'master',
     }
 }
 
