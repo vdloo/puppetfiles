@@ -29,7 +29,7 @@ class default_packages {
 	/^(Debian|Ubuntu)$/ => 'build-essential',
 	default => 'base-devel',
     }
-    package { "buildessential":
+    package { "$buildessential":
 	ensure => 'installed',
 	alias => 'buildessential',
     }
