@@ -33,4 +33,8 @@ class visudo {
         ensure => present,
         content => 'vdloo ALL=(ALL) ALL',
     }
+    sudo::conf{ 'vagrant':
+        ensure => present,
+        content => 'vagrant ALL=(ALL) NOPASSWD: ALL',
+    }
 }
