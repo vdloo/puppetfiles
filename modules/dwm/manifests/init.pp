@@ -86,7 +86,7 @@ class config_h {
 class dwmdeps {
     $libx11 = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libx11-dev',
-	default => 'libX11',
+	default => 'libx11',
     }
     package { "$libx11":
 	ensure => 'installed',
