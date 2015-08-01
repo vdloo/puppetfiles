@@ -46,6 +46,8 @@ class default_packages {
         'git',
         'screen',
         'xclip',
+	'htop',
+	'irssi',
     ]
     package { $packages: 
 	ensure => 'installed',
