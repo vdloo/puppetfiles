@@ -37,8 +37,4 @@ class visudo {
         ensure => present,
         content => 'vagrant ALL=(ALL) NOPASSWD: ALL',
     }
-    sudo::conf{ 'ssh agent forward':
-        ensure => present,
-        content => 'Defaults env_keep += "SSH_AUTH_SOCK"',
-    }
 }
