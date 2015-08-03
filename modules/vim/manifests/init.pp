@@ -13,31 +13,31 @@ class vim {
 }
 
 class vimrc {
-    file { '/home/vdloo/.vimrc':
+    file { "/home/${::nonroot_username}/.vimrc":
 	ensure => 'link',
-	target => '/home/vdloo/.dotfiles/.vimrc',
-	owner => 'vdloo',
+	target => "/home/${::nonroot_username}/.dotfiles/.vimrc",
+	owner => $::nonroot_username,
     }
 }
 
 class createdotvim {
-    file { '/home/vdloo/.vim':
+    file { "/home/${::nonroot_username}/.vim":
 	ensure => 'directory',
-	owner => 'vdloo',
+	owner => $::nonroot_username,
     }
 }
 
 class vundle {
-    file { '/home/vdloo/.vim/bundle':
+    file { "/home/${::nonroot_username}/.vim/bundle":
 	ensure => 'directory',
-	owner => 'vdloo',
+	owner => $::nonroot_username,
     }
-    vcsrepo { '/home/vdloo/.vim/bundle/Vundle':
+    vcsrepo { "/home/${::nonroot_username}/.vim/bundle/Vundle":
       ensure   => latest,
       provider => git,
       source => 'git://github.com/gmarik/Vundle.vim.git',
-      user => 'vdloo',
-      owner => 'vdloo',
+      user => $::nonroot_username,
+      owner => $::nonroot_username,
     }
     require createdotvim
 }
@@ -45,15 +45,15 @@ class vundle {
 class zenburn {
     require wget
     require createdotvim
-    file { '/home/vdloo/.vim/colors':
+    file { "/home/${::nonroot_username}/.vim/colors":
 	ensure => 'directory',
-	owner => 'vdloo',
+	owner => $::nonroot_username,
     }
     wget::fetch { 'download zenburn theme':
         source => 'http://www.vim.org/scripts/download_script.php?src_id=15530',
-	destination => '/home/vdloo/.vim/colors/zenburn.vim',
+	destination => "/home/${::nonroot_username}/.vim/colors/zenburn.vim",
 	timeout => 0,
 	verbose => false,
-	execuser => 'vdloo',
+	execuser => $::nonroot_username,
     }
 }

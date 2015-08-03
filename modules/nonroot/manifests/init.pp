@@ -6,9 +6,8 @@ class nonroot {
 }
 
 class createnonrootuser {
-    $nonroot_username = hiera('nonroot_username', 'nonroot')
     user { 
-        $nonroot_username:
+        $::nonroot_username:
         ensure => present,
         shell => '/bin/bash',
         managehome => 'true',
@@ -17,27 +16,23 @@ class createnonrootuser {
 }
 
 class setgitconfig {
-    $nonroot_username = hiera('nonroot_username', 'nonroot')
     require createnonrootuser
     # if the nonroot_git_* entries are not defined in hiera the use email and name will default to 
-    $nonroot_git_email = hiera('nonroot_git_email', 'johndoe@example.com')
     exec { 'set git user email':
-        command => "/bin/su - ${nonroot_username} -c \"/usr/bin/git config --global user.email '${nonroot_git_email}'\"",
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global user.email '${::nonroot_git_email}'\"",
     }
-    $nonroot_git_username = hiera('nonroot_git_username', 'John Doe')
     exec { 'set git user name':
-        command => "/bin/su - ${nonroot_username} -c \"/usr/bin/git config --global user.name '${nonroot_git_username}'\"",
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global user.name '${::nonroot_git_username}'\"",
     }
     exec { 'set git editor':
-        command => "/bin/su - ${nonroot_username} -c \"/usr/bin/git config --global core.editor 'vim'\"",
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global core.editor 'vim'\"",
     }
 }
 
 class visudo {
-    $nonroot_username = hiera('nonroot_username', 'nonroot')
-    sudo::conf{ $nonroot_username:
+    sudo::conf{ $::nonroot_username:
         ensure => present,
-        content => hiera('nonroot_sudoers_entry', "${nonroot_username} ALL=(ALL) ALL"),
+        content => hiera('nonroot_sudoers_entry', "${::nonroot_username} ALL=(ALL) ALL"),
     }
     sudo::conf{ 'vagrant':
         ensure => present,
