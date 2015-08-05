@@ -3,6 +3,8 @@ if [ "$(id -u)" != "0" ]; then
 	echo 'run this script as root';
 else
 	dirname=$(dirname "$0");
-	modulepath=$(puppet master --configprint modulepath);
-	puppet apply --modulepath="$modulepath:$dirname/modules:$dirname/roles:$dirname/operating_systems" "$@";
+	hieraconfig="$dirname/hiera/hiera.yaml"
+	base=$(puppet master --configprint modulepath);
+	modulepath="$base:$dirname/modules:$dirname/roles:$dirname/operating_systems" 
+	puppet apply --modulepath="$modulepath" --hiera_config=$hieraconfig "$@"; 
 fi

@@ -33,19 +33,13 @@ class default_packages {
 	ensure => 'installed',
 	alias => 'buildessential',
     }
-    $vim = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'vim-nox',
-	default => 'vim',
-    }
-    package { "$vim":
-	ensure => 'installed',
-	alias => 'vim',
-    }
     $packages = [
         'curl',
         'git',
         'screen',
         'xclip',
+	'htop',
+	'irssi',
     ]
     package { $packages: 
 	ensure => 'installed',

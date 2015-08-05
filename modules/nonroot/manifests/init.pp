@@ -7,38 +7,35 @@ class nonroot {
 
 class createnonrootuser {
     user { 
-	'vdloo':
-	ensure => present,
-	shell => '/bin/bash',
-	managehome => 'true',
-	password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
+        $::nonroot_username:
+        ensure => present,
+        shell => '/bin/bash',
+        managehome => 'true',
+        password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
     }
 }
 
 class setgitconfig {
     require createnonrootuser
+    # if the nonroot_git_* entries are not defined in hiera the use email and name will default to 
     exec { 'set git user email':
-	command => '/bin/su - vdloo -c "/usr/bin/git config --global user.email \'rickvandeloo@gmail.com\'"',
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global user.email '${::nonroot_git_email}'\"",
     }
     exec { 'set git user name':
-	command => '/bin/su - vdloo -c "/usr/bin/git config --global user.name \'Rick van de Loo\'"',
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global user.name '${::nonroot_git_username}'\"",
     }
     exec { 'set git editor':
-	command => '/bin/su - vdloo -c "/usr/bin/git config --global core.editor \'vim\'"',
+        command => "/bin/su - ${::nonroot_username} -c \"/usr/bin/git config --global core.editor 'vim'\"",
     }
 }
 
 class visudo {
-    sudo::conf{ 'vdloo':
+    sudo::conf{ $::nonroot_username:
         ensure => present,
-        content => 'vdloo ALL=(ALL) ALL',
+        content => hiera('nonroot_sudoers_entry', "${::nonroot_username} ALL=(ALL) ALL"),
     }
     sudo::conf{ 'vagrant':
         ensure => present,
         content => 'vagrant ALL=(ALL) NOPASSWD: ALL',
-    }
-    sudo::conf{ 'ssh agent forward':
-        ensure => present,
-        content => 'Defaults env_keep += "SSH_AUTH_SOCK"',
     }
 }
