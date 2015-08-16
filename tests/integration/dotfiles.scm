@@ -4,7 +4,8 @@
 
     (test-case
       "Check if we can login with ssh and echo something"
-      (check-equal? "1" (run_command '("/bin/echo" "1"))))
+      (check-false (eof-object? (run_command '("/bin/echo" "1"))) 
+                   "output is EOF object"))
 
     (test-case
       "Check nonroot user exists"
