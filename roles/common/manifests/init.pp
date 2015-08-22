@@ -1,6 +1,6 @@
 class common {
     require os, default_packages
-    include consul
+    include discovery
     include nonroot
     include dotfiles
     include vim	
