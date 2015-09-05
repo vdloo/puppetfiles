@@ -49,6 +49,7 @@ class default_packages {
         'xclip',
 	'htop',
 	'irssi',
+	'nmap',
     ]
     package { $packages: 
 	ensure => 'installed',
