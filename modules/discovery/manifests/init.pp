@@ -7,6 +7,7 @@ class discovery {
       'log_level'        => 'INFO',
       'node_name'        => 'common',
       'server'           => true,
+      'bind'             => '::1'
     }
   }
 }
