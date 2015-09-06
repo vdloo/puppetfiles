@@ -1,6 +1,6 @@
 class common {
     require os, default_packages
-    include discovery
+#   include discovery
     include nonroot
     include dotfiles
     include vim	
