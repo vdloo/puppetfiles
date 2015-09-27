@@ -43,14 +43,15 @@ class default_packages {
 	alias => 'buildessential',
     }
     $packages = [
+	'ctags',
+	'htop',
+	'iftop',
+	'irssi',
+	'nmap',
         'curl',
         'git',
         'screen',
         'xclip',
-	'htop',
-	'irssi',
-	'nmap',
-	'ctags',
     ]
     package { $packages: 
 	ensure => 'installed',
