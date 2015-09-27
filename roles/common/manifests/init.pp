@@ -52,6 +52,7 @@ class default_packages {
         'git',
         'screen',
         'xclip',
+	'python-virtualenv'
     ]
     package { $packages: 
 	ensure => 'installed',
