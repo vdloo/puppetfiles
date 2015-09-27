@@ -50,6 +50,7 @@ class default_packages {
 	'htop',
 	'irssi',
 	'nmap',
+	'ctags',
     ]
     package { $packages: 
 	ensure => 'installed',
