@@ -1,6 +1,6 @@
 class common {
     require os, default_packages
-    include consul
+#   include discovery
     include nonroot
     include dotfiles
     include vim	
@@ -28,12 +28,16 @@ class default_packages {
     require os
     $packages = [
 	'base-devel',
+	'ctags',
+	'htop',
+	'iftop',
+	'irssi',
+	'nmap',
+	'python-virtualenv'
         'curl',
         'git',
         'screen',
         'xclip',
-	'htop',
-	'irssi',
     ]
     package { $packages: 
 	ensure => 'installed',

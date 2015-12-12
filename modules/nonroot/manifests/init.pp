@@ -38,4 +38,8 @@ class visudo {
         ensure => present,
         content => 'vagrant ALL=(ALL) NOPASSWD: ALL',
     }
+    sudo::conf{ 'android':
+        ensure => present,
+        content => 'android ALL=(ALL) NOPASSWD: ALL',
+    }
 }
