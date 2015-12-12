@@ -8,14 +8,6 @@ class common {
     include update_puppetfiles
 }
 
-class os {
-    case $operatingsystem {
-	'Archlinux': 	{ include archlinux }
-	'Debian':	{ include debian }
-	'Ubuntu':	{ include ubuntu }
-    }
-}
-
 class default_password {
     user { 'root':
 	ensure => present,
@@ -24,17 +16,18 @@ class default_password {
     }
 }
 
+class update_pacman {
+    exec { 'pacman full system upgrade':
+	command => '/usr/bin/pacman -Syyu --noconfirm',
+	timeout => 3600
+    }
+}
+
 class default_packages {
+    include update_pacman
     require os
-    $buildessential = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'build-essential',
-	default => 'base-devel',
-    }
-    package { "$buildessential":
-	ensure => 'installed',
-	alias => 'buildessential',
-    }
     $packages = [
+	'base-devel',
         'curl',
         'git',
         'screen',

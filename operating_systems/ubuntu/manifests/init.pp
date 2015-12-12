@@ -1,3 +1,0 @@
-class ubuntu {
-    include debianlike
-}

@@ -84,37 +84,25 @@ class config_h {
 }
 
 class dwmdeps {
-    $libx11 = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'libx11-dev',
-	default => 'libx11',
-    }
-    package { "$libx11":
+    package { "libx11":
 	ensure => 'installed',
 	alias => 'libx11',
     }
-    $libxft = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'libxft-dev',
-	default => 'libxft',
-    }
-    package { "$libxft":
+    package { "libxft":
 	ensure => 'installed',
 	alias => 'libxft',
     }
-    $libxinerama = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'libxinerama-dev',
-	default => 'libxinerama',
-    }
-    package { "$libxinerama":
+    package { "libxinerama":
 	ensure => 'installed',
 	alias => 'libxinerama',
     }
-    $xorg = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'xorg',
-	default => 'xorg-server',
-    }
-    package { "$xorg":
+    package { "xorg-server":
 	ensure => 'installed',
-	alias => 'xorg',
+	alias => 'xorg-server',
+    }
+    package { "xorg-xinit":
+	ensure => 'installed',
+	alias => 'xorg-xinit',
     }
     package { "dmenu":
 	ensure => 'installed',

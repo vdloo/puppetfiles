@@ -1,9 +1,5 @@
 class browser {
-    $browser = $operatingsystem ? {
-	/^Debian$/ => 'iceaweasel',
-	default => 'firefox',
-    }
-    package { "$browser":
+    package { "firefox":
 	ensure => 'installed',
 	alias => 'browser',
     }

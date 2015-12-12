@@ -1,9 +1,5 @@
 class vim {
-    $vim = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'vim-nox',
-	default => 'vim',
-    }
-    package { "$vim":
+    package { "vim":
 	ensure => 'installed',
 	alias => 'vim',
     }
