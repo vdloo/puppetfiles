@@ -11,7 +11,7 @@ class createnonrootuser {
         ensure => present,
         shell => '/bin/bash',
         managehome => 'true',
-        password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
+        password => '$6$lrQsdpo/$e7GRAnb67VxJv2HWpW1hZx7kyeMzpbC45yiuwOgkoLxOjzCQbf9eTefmTT/ElgvxfAZq3YdX/l6f1wBLLU5Lv1',  #toor
     }
 }
 
