@@ -1,5 +1,5 @@
 class common {
-    require os, default_packages
+    require default_packages
 #   include discovery
     include nonroot
     include dotfiles
@@ -25,7 +25,6 @@ class update_pacman {
 
 class default_packages {
     include update_pacman
-    require os
     $packages = [
 	'base-devel',
 	'ctags',
@@ -33,11 +32,11 @@ class default_packages {
 	'iftop',
 	'irssi',
 	'nmap',
-	'python-virtualenv'
+	'python-virtualenv',
         'curl',
         'git',
         'screen',
-        'xclip',
+        'xclip'
     ]
     package { $packages: 
 	ensure => 'installed',
