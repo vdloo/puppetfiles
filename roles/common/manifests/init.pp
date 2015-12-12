@@ -26,14 +26,6 @@ class default_password {
 
 class default_packages {
     require os
-    $racket = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'racket',
-	default => 'racket-minimal',
-    }
-    package { "$racket":
-	ensure => 'installed',
-	alias => 'racket',
-    }
     $buildessential = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'build-essential',
 	default => 'base-devel',
