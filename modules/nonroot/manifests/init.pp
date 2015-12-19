@@ -11,8 +11,12 @@ class createnonrootuser {
         ensure => present,
         shell => '/bin/bash',
         managehome => 'true',
-        password => '$6$lrQsdpo/$e7GRAnb67VxJv2HWpW1hZx7kyeMzpbC45yiuwOgkoLxOjzCQbf9eTefmTT/ElgvxfAZq3YdX/l6f1wBLLU5Lv1',  #toor
     }
+    ssh_authorized_key { 'insecure': 
+        user => "${::nonroot_username}", 
+        type => 'rsa', 
+        key => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC67IvPysSnCtOfzKmu33jDlbyFC6cLR3OwMkUWzzsYVrjGZWzaJI+JORHg2hI7SQG7v0YK1oHMnUDE3WL4Dc8JoFY0mOXxtSpbvrQrjc+mAzMPy5ITP5mGdFr/mXE8z5lLWlWX5/oNLZN6EVUro6UYjiVDarDQiR1Y2UfeoxkIXMCydQ2Yls8wBZc0uLrkEl3CPwImUsIfsvJvGrx+TGPUNT+cONbX3X1t8OHT8t40Xx+vQcV4lmDTg00sprrPvn57RniB9B3shbDfwBxTAWXOR9C79f4xURjUrzI5FQI5sMfF7Fhchvr6k4fx7TfDdhbqUG7iOBTAyE1fiXKkp7NX',
+     }
 }
 
 class setgitconfig {
