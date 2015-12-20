@@ -32,6 +32,7 @@ class default_packages {
 	'iftop',
 	'irssi',
 	'nmap',
+	'unzip',
 	'python-virtualenv',
         'curl',
         'git',
