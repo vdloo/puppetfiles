@@ -108,6 +108,13 @@ class dwmdeps {
 	ensure => 'installed',
 	alias => 'libxinerama',
     }
+    if $virtual != 'physical' {
+      if $operatingsystem =~ /^(Debian|Ubuntu)$/ {
+        package { "xserver-xorg-legacy":
+	    ensure => 'installed',
+        }
+      }
+    }
     $xorg = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'xorg',
 	default => 'xorg-server',
