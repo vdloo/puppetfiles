@@ -2,5 +2,7 @@ class workstation {
     include dwm
     include terminal
     include browser
-    include autologin
+    if $operatingsystem != 'Archlinux' {
+      include autologin
+    }
 }
