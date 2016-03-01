@@ -1,11 +1,18 @@
 class common {
     require default_packages
-#   include discovery
     include nonroot
     include dotfiles
     include vim	
     include default_password
     include update_puppetfiles
+}
+
+class os {
+    case $operatingsystem {
+	'Archlinux': 	{ include archlinux }
+	'Debian':	{ include debian }
+	'Ubuntu':	{ include ubuntu }
+    }
 }
 
 class default_password {
@@ -16,25 +23,27 @@ class default_password {
     }
 }
 
-class update_pacman {
-    exec { 'pacman full system upgrade':
-	command => '/usr/bin/pacman -Syyu --noconfirm',
-	timeout => 3600
-    }
-}
-
 class default_packages {
-    include update_pacman
+    require os
+    $buildessential = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'build-essential',
+	default => 'base-devel',
+    }
+    package { "$buildessential":
+	ensure => 'installed',
+	alias => 'buildessential',
+    }
     $packages = [
-	'base-devel',
-	'ctags',
+	'python-virtualenv',
+	'unzip',
+        'curl',
+	'nmap',
+	'automake',
+	'make',
 	'htop',
 	'iftop',
 	'irssi',
-	'nmap',
-	'unzip',
-	'python-virtualenv',
-        'curl',
+	'ctags',
         'git',
         'screen',
         'xclip'
