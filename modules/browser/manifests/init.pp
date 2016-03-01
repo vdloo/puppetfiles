@@ -1,7 +1,7 @@
 class browser {
     $browser = $operatingsystem ? {
-	/^Debian$/ => 'iceaweasel',
-	default => 'firefox',
+	/^(Debian|Ubuntu)$/ => 'chromium-browser',
+	default => 'chromium',
     }
     package { "$browser":
 	ensure => 'installed',
