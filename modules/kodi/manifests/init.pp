@@ -3,22 +3,23 @@ class kodi {
     require kodi_dependencies
     exec { 'bootstrap kodi':
 	command => "/home/${::nonroot_username}/.kodi/bootstrap",
-	onlyif => 'test ! -x /usr/local/bin/kodi'
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
     exec { 'configure kodi':
 	command => "/home/${::nonroot_username}/.kodi/configure",
-	onlyif => 'test ! -x /usr/local/bin/kodi'
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
+        environment => 'PYTHON_VERSION=2'
 
     }
     exec { 'build kodi':
-	command => 'make -j %{facts.processors.count}',
+	command => "/usr/bin/make -j %{facts.processors.count}",
 	cwd => "/home/${::nonroot_username}/.kodi/",
-	onlyif => 'test ! -x /usr/local/bin/kodi'
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
     exec { 'install kodi':
-	command => 'make install',
+	command => '/usr/bin/make install',
 	cwd => "/home/${::nonroot_username}/.kodi/",
-	onlyif => 'test ! -x /usr/local/bin/kodi'
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
 
@@ -57,12 +58,12 @@ class kodi_dependencies {
 	'swig',
 	'jre7-openjdk',
 	'glu',
-	'mysqlclient',
+	'libmariadbclient',
 	'libass',
 	'dcadec',
-	'tinyxml'
+	'tinyxml',
 	'libcrossguid',
-	'taglib'
+	'taglib',
 	'libcdio',
 	'libssh',
 	'smbclient',
