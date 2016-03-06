@@ -127,9 +127,9 @@ class dwmdeps {
 	/^(Debian|Ubuntu)$/ => 'xinit',
 	default => 'xorg-xinit',
     }
-    package { "$xorg":
+    package { "$xinit":
 	ensure => 'installed',
-	alias => 'xorg',
+	alias => 'xinit',
     }
     package { "dmenu":
 	ensure => 'installed',

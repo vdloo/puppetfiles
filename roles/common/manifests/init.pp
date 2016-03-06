@@ -1,10 +1,12 @@
 class common {
-    require default_packages
-    include nonroot
-    include dotfiles
-    include vim	
-    include default_password
-    include update_puppetfiles
+	require default_packages
+        require machine_settings_directory
+	include nonroot
+	include dotfiles
+	include vim	
+	include default_password
+	include update_puppetfiles
+        include common_flag
 }
 
 class os {
@@ -46,7 +48,8 @@ class default_packages {
 	'ctags',
         'git',
         'screen',
-        'xclip'
+        'xclip',
+	'feh',
     ]
     package { $packages: 
 	ensure => 'installed',
@@ -60,4 +63,22 @@ class update_puppetfiles {
       source => 'https://github.com/vdloo/puppetfiles',
       revision => 'master',
     }
+}
+
+class machine_settings_directory {
+	file {'/usr/etc':
+	    ensure => 'directory',
+	    mode => '0755',
+	}
+	file {'/usr/etc/machineconf':
+	    ensure => 'directory',
+	    mode => '0755',
+	}
+}
+
+class common_flag {
+	file {'/usr/etc/machineconf/common':
+	    mode => '0644',
+	    ensure => 'present',
+	}
 }

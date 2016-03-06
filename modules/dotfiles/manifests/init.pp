@@ -1,10 +1,10 @@
 class dotfiles {
     vcsrepo { "/home/${::nonroot_username}/.dotfiles":
-      ensure   => latest,
-      provider => git,
-      source => 'git://github.com/vdloo/dotfiles.git',
-      user => $::nonroot_username,
-      owner => $::nonroot_username,
+	ensure   => latest,
+	provider => git,
+	source => 'git://github.com/vdloo/dotfiles.git',
+	user => $::nonroot_username,
+	owner => $::nonroot_username,
     }
     include linkdotfiles
 }
