@@ -1,5 +1,6 @@
 class htpc {
 	include htpc_flag
+	include kodi
 }
 
 class htpc_flag {

@@ -4,7 +4,7 @@ class dwm {
     require refresh_dwm_repo
     require fibonacci
     require gaplessgrid
-    require dwmdeps
+    require dwm_dependencies
     require config_h
     exec { 'build dwm':
 	command => '/usr/bin/make clean',
@@ -83,7 +83,7 @@ class config_h {
     }
 }
 
-class dwmdeps {
+class dwm_dependencies {
     $libx11 = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libx11-dev',
 	default => 'libx11',
