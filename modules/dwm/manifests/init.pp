@@ -131,6 +131,14 @@ class dwmdeps {
 	ensure => 'installed',
 	alias => 'xinit',
     }
+    $xsetroot = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'x11-xserver-utils',
+	default => 'xorg-xsetroot',
+    }
+    package { "$xsetroot":
+	ensure => 'installed',
+	alias => 'xsetroot',
+    }
     package { "dmenu":
 	ensure => 'installed',
     }
