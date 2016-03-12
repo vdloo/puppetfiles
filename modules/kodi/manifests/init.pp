@@ -246,7 +246,11 @@ class kodi_dependencies {
 	ensure => 'installed',
     }
     if $operatingsystem != 'Archlinux' {
-	    package { 'libcurl4-openssl-dev':
+	    $kodi_debian_deps = [
+		'libcurl4-openssl-dev',
+		'autopoint'
+	    ]
+	    package { $kodi_debian_deps: 
 		ensure => 'installed',
 	    }
     }
