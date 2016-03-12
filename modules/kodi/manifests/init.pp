@@ -1,4 +1,8 @@
 class kodi {
+    include install_kodi
+}
+
+class bootstrap_kodi {
     require refresh_kodi_repo
     require kodi_dependencies
     exec { 'bootstrap kodi':
@@ -6,6 +10,10 @@ class kodi {
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
+}
+
+class configure_kodi {
+    require bootstrap_kodi
     exec { 'configure kodi':
 	command => "/home/${::nonroot_username}/.kodi/configure",
 	cwd => "/home/${::nonroot_username}/.kodi/",
@@ -13,12 +21,20 @@ class kodi {
         environment => 'PYTHON_VERSION=2',
 	timeout     => 600
     }
+}
+
+class build_kodi {
+    require configure_kodi
     exec { 'build kodi':
 	command => "/usr/bin/make -j $processorcount",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
 	timeout     => 600
     }
+}
+
+class install_kodi {
+    require build_kodi
     exec { 'install kodi':
 	command => '/usr/bin/make install',
 	cwd => "/home/${::nonroot_username}/.kodi/",
@@ -63,17 +79,6 @@ class bootstrap_depends {
     }
 }
 
-class configure_depends {
-    require refresh_kodi_repo
-    require bootstrap_depends
-    exec { 'configure depends':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
-        environment => 'PREFIX=/usr/local',
-	timeout     => 600
-    }
-}
-
 class install_crossguid {
     package { "libcrossguid":
 	ensure => 'installed',
@@ -83,7 +88,12 @@ class install_crossguid {
 class build_crossguid {
     require refresh_kodi_repo
     require bootstrap_depends
-    require configure_depends
+    exec { 'configure depends for crossguid':
+	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+        environment => 'PREFIX=/usr/local',
+	timeout     => 600
+    }
     exec { 'build crossguid':
 	command => "/usr/bin/make -C target/crossguid",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
@@ -101,7 +111,12 @@ class install_dcadec {
 class build_dcadec {
     require refresh_kodi_repo
     require bootstrap_depends
-    require configure_depends
+    exec { 'configure depends for dcadec':
+	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+        environment => 'PREFIX=/usr/local',
+	timeout     => 600
+    }
     exec { 'build dcadec':
 	command => "/usr/bin/make -C target/libdcadec",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
@@ -116,10 +131,33 @@ class install_taglib {
     }
 }
 
+class build_cmake {
+    require refresh_kodi_repo
+    require bootstrap_depends
+    exec { 'configure depends for cmake':
+	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+        environment => 'PREFIX=/usr/local',
+	timeout     => 600
+    }
+    exec { 'build cmake':
+	command => "/usr/bin/make -C native/cmake-native/",
+	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+        environment => 'PREFIX=/usr/local',
+	timeout     => 600
+    }
+}
+
 class build_taglib {
     require refresh_kodi_repo
     require bootstrap_depends
-    require configure_depends
+    require build_cmake
+    exec { 'configure depends for taglib':
+	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+        environment => 'PREFIX=/usr/local',
+	timeout     => 600
+    }
     exec { 'build taglib':
 	command => "/usr/bin/make -C target/taglib/",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
@@ -194,6 +232,30 @@ class kodi_dependencies {
     package { "$libuuid":
 	ensure => 'installed',
     }
+    if $operatingsystem != 'Archlinux' {
+	    package { 'libcurl4-openssl-dev':
+		ensure => 'installed',
+	    }
+    }
+    $python = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'python-dev',
+	default => 'python2',
+    }
+    package { "$python":
+	ensure => 'installed',
+    }
+    $kodi_deps = [
+	'swig',
+	'smbclient',
+	'gperf',
+	'libtool',
+	'gettext',
+	'cmake',
+	'zip'
+    ]
+    package { $kodi_deps: 
+	ensure => 'installed',
+    }
     case $operatingsystem {
 	'Archlinux': 	{ include install_crossguid }
 	'Debian':	{ include build_crossguid }
@@ -208,15 +270,5 @@ class kodi_dependencies {
 	'Archlinux': 	{ include install_taglib }
 	'Debian':	{ include build_taglib }
 	'Ubuntu':	{ include build_taglib }
-    }
-    $kodi_deps = [
-	'swig',
-	'smbclient',
-	'gperf',
-	'cmake',
-	'zip'
-    ]
-    package { $kodi_deps: 
-	ensure => 'installed',
     }
 }
