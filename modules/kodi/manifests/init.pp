@@ -49,6 +49,7 @@ class clone_kodi_repo {
       source => 'https://github.com/xbmc/xbmc.git',
       user => $::nonroot_username,
       owner => $::nonroot_username,
+      depth => 5,
       revision => 'master',
     }
 }
