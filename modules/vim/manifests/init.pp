@@ -35,7 +35,7 @@ class vundle {
     vcsrepo { "/home/${::nonroot_username}/.vim/bundle/Vundle":
       ensure   => latest,
       provider => git,
-      source => 'git://github.com/gmarik/Vundle.vim.git',
+      source => 'https://github.com/VundleVim/Vundle.vim',
       user => $::nonroot_username,
       owner => $::nonroot_username,
     }

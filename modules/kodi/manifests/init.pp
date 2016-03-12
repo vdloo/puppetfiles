@@ -46,7 +46,7 @@ class clone_kodi_repo {
     vcsrepo { "/home/${::nonroot_username}/.kodi":
       ensure   => latest,
       provider => git,
-      source => 'git://github.com/xbmc/xbmc.git',
+      source => 'https://github.com/xbmc/xbmc.git',
       user => $::nonroot_username,
       owner => $::nonroot_username,
       revision => 'master',
