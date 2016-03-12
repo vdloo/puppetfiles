@@ -93,13 +93,16 @@ class build_crossguid {
 	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	notify => Exec['build crossguid']
     }
     exec { 'build crossguid':
 	command => "/usr/bin/make -C target/crossguid",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	refreshonly => true,
+        require => Exec['configure depends for crossguid']
     }
 }
 
@@ -116,13 +119,16 @@ class build_dcadec {
 	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	notify => Exec['build dcadec']
     }
     exec { 'build dcadec':
 	command => "/usr/bin/make -C target/libdcadec",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	refreshonly => true,
+        require => Exec['configure depends for dcadec']
     }
 }
 
@@ -139,13 +145,16 @@ class build_cmake {
 	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	notify => Exec['build cmake']
     }
     exec { 'build cmake':
 	command => "/usr/bin/make -C native/cmake-native/",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	refreshonly => true,
+        require => Exec['configure depends for cmake']
     }
 }
 
@@ -157,13 +166,16 @@ class build_taglib {
 	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	notify => Exec['build taglib']
     }
     exec { 'build taglib':
 	command => "/usr/bin/make -C target/taglib/",
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
-	timeout     => 600
+	timeout     => 600,
+	refreshonly => true,
+        require => Exec['configure depends for taglib']
     }
 }
 
