@@ -29,7 +29,7 @@ class configure_kodi {
 	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
-        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/'],
+        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CXXFLAGS="-I/usr/local/x86_64-linux-gnu/include"', 'LDFLAGS="-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"'],
 	timeout     => 600
     }
 }
