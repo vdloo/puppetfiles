@@ -222,7 +222,7 @@ class kodi_dependencies {
 	ensure => 'installed',
     }
     $mariadbclient = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'mariadb-client',
+	/^(Debian|Ubuntu)$/ => 'libmariadbclient-dev',
 	default => 'libmariadbclient',
     }
     package { "$mariadbclient":
@@ -277,6 +277,41 @@ class kodi_dependencies {
 	default => 'python2',
     }
     package { "$python":
+	ensure => 'installed',
+    }
+    $glew = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libglew',
+	default => 'glew',
+    }
+    package { "$glew":
+	ensure => 'installed',
+    }
+    $libmpeg2 = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libmpeg2-4-dev',
+	default => 'libmpeg2',
+    }
+    package { "$libmpeg2":
+	ensure => 'installed',
+    }
+    $libjpeg = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libjpeg-dev',
+	default => 'libjpeg',
+    }
+    package { "$libjpeg":
+	ensure => 'installed',
+    }
+    $libogg = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libogg-dev',
+	default => 'libogg',
+    }
+    package { "$libogg":
+	ensure => 'installed',
+    }
+    $libvorbis = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libvorbis-dev',
+	default => 'libvorbis',
+    }
+    package { "$libvorbis":
 	ensure => 'installed',
     }
     $kodi_deps = [
