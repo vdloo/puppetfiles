@@ -26,10 +26,10 @@ class bootstrap_kodi {
 class configure_kodi {
     require bootstrap_kodi
     exec { 'configure kodi':
-	command => "/home/${::nonroot_username}/.kodi/configure --enable-libcec",
+	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
-        environment => 'PYTHON_VERSION=2 PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/',
+        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/'],
 	timeout     => 600
     }
 }
