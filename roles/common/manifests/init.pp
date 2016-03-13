@@ -11,9 +11,9 @@ class common {
 
 class os {
     case $operatingsystem {
-	'Archlinux': 	{ include archlinux }
-	'Debian':	{ include debian }
-	'Ubuntu':	{ include ubuntu }
+	'Archlinux': 	{ require archlinux }
+	'Debian':	{ require debian }
+	'Ubuntu':	{ require ubuntu }
     }
 }
 
