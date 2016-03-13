@@ -393,6 +393,13 @@ class kodi_dependencies {
     package { "$libusb":
 	ensure => 'installed',
     }
+    $boost = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libboost-dev',
+	default => 'boost',
+    }
+    package { "$boost":
+	ensure => 'installed',
+    }
     $kodi_deps = [
 	'swig',
 	'gperf',
