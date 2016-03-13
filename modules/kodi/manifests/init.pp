@@ -40,6 +40,7 @@ class build_kodi {
 	command => "/usr/bin/make -j $processorcount",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
+        environment => 'CPPFLAGS="-I /usr/local/x86_64-linux-gnu/include"',
 	timeout     => 600
     }
 }
