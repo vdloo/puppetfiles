@@ -105,7 +105,8 @@ class build_crossguid {
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
-	notify => Exec['build crossguid']
+	notify => Exec['build crossguid'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/lib/libcrossguid.a'
     }
     exec { 'build crossguid':
 	command => "/usr/bin/make -C target/crossguid",
@@ -113,7 +114,8 @@ class build_crossguid {
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
-        require => Exec['configure depends for crossguid']
+        require => Exec['configure depends for crossguid'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/lib/libcrossguid.a'
     }
 }
 
@@ -131,7 +133,8 @@ class build_dcadec {
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
-	notify => Exec['build dcadec']
+	notify => Exec['build dcadec'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/dcadec'
     }
     exec { 'build dcadec':
 	command => "/usr/bin/make -C target/libdcadec",
@@ -139,7 +142,8 @@ class build_dcadec {
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
-        require => Exec['configure depends for dcadec']
+        require => Exec['configure depends for dcadec'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/dcadec'
     }
 }
 
@@ -157,7 +161,8 @@ class build_cmake {
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
-	notify => Exec['build cmake']
+	notify => Exec['build cmake'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu-native/bin/cmake'
     }
     exec { 'build cmake':
 	command => "/usr/bin/make -C native/cmake-native/",
@@ -165,7 +170,8 @@ class build_cmake {
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
-        require => Exec['configure depends for cmake']
+        require => Exec['configure depends for cmake'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu-native/bin/cmake'
     }
 }
 
@@ -178,7 +184,8 @@ class build_taglib {
 	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
-	notify => Exec['build taglib']
+	notify => Exec['build taglib'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/taglib-config'
     }
     exec { 'build taglib':
 	command => "/usr/bin/make -C target/taglib/",
@@ -186,7 +193,8 @@ class build_taglib {
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
-        require => Exec['configure depends for taglib']
+        require => Exec['configure depends for taglib'],
+	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/taglib-config'
     }
 }
 
