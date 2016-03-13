@@ -26,10 +26,10 @@ class bootstrap_kodi {
 class configure_kodi {
     require bootstrap_kodi
     exec { 'configure kodi':
-	command => "/home/${::nonroot_username}/.kodi/configure",
+	command => "/home/${::nonroot_username}/.kodi/configure --enable-libcec",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
-        environment => 'PYTHON_VERSION=2',
+        environment => 'PYTHON_VERSION=2 PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/',
 	timeout     => 600
     }
 }
@@ -222,7 +222,7 @@ class kodi_dependencies {
 	ensure => 'installed',
     }
     $mariadbclient = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'libmariadbclient-dev',
+	/^(Debian|Ubuntu)$/ => 'libmysqlclient-dev',
 	default => 'libmariadbclient',
     }
     package { "$mariadbclient":
@@ -266,7 +266,8 @@ class kodi_dependencies {
     if $operatingsystem != 'Archlinux' {
 	    $kodi_debian_deps = [
 		'libcurl4-openssl-dev',
-		'autopoint'
+		'autopoint',
+		'libiso9660-dev'
 	    ]
 	    package { $kodi_debian_deps: 
 		ensure => 'installed',
@@ -280,7 +281,7 @@ class kodi_dependencies {
 	ensure => 'installed',
     }
     $glew = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'libglew',
+	/^(Debian|Ubuntu)$/ => 'libglew-dev',
 	default => 'glew',
     }
     package { "$glew":
@@ -314,13 +315,90 @@ class kodi_dependencies {
     package { "$libvorbis":
 	ensure => 'installed',
     }
+    $libbz2 = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libbz2-dev',
+	default => 'bzip2',
+    }
+    package { "$libbz2":
+	ensure => 'installed',
+    }
+    $libtiff = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libtiff-dev',
+	default => 'libtiff',
+    }
+    package { "$libtiff":
+	ensure => 'installed',
+    }
+    $liblzo = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'liblzo2-dev',
+	default => 'lzo',
+    }
+    package { "$liblzo":
+	ensure => 'installed',
+    }
+    $libyajl = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libyajl-dev',
+	default => 'yajl',
+    }
+    package { "$libyajl":
+	ensure => 'installed',
+    }
+    $sqlite3 = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libsqlite3-dev',
+	default => 'sqlite3',
+    }
+    package { "$sqlite3":
+	ensure => 'installed',
+    }
+    $libpcre = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libpcre3-dev',
+	default => 'pcre',
+    }
+    package { "$libpcre":
+	ensure => 'installed',
+    }
+    $libjasper = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libjasper-dev',
+	default => 'jasper',
+    }
+    package { "$libjasper":
+	ensure => 'installed',
+    }
+    $libmicrohttpd = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libmicrohttpd-dev',
+	default => 'libmicrohttpd',
+    }
+    package { "$libmicrohttpd":
+	ensure => 'installed',
+    }
+    $libxrandr = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libxrandr-dev',
+	default => 'libxrandr',
+    }
+    package { "$libxrandr":
+	ensure => 'installed',
+    }
+    $libsmbclient = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libsmbclient-dev',
+	default => 'smbclient',
+    }
+    package { "$libsmbclient":
+	ensure => 'installed',
+    }
+    $libusb = $operatingsystem ? {
+	/^(Debian|Ubuntu)$/ => 'libusb-dev',
+	default => 'libusb',
+    }
+    package { "$libusb":
+	ensure => 'installed',
+    }
     $kodi_deps = [
 	'swig',
-	'smbclient',
 	'gperf',
 	'libtool',
 	'gettext',
 	'cmake',
+	'gawk',
 	'zip'
     ]
     package { $kodi_deps: 
