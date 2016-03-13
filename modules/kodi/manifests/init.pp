@@ -61,7 +61,6 @@ class clone_kodi_repo {
       user => $::nonroot_username,
       owner => $::nonroot_username,
       depth => '1',
-      revision => '16.0-Jarvis'
     }
 }
 
