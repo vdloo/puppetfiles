@@ -296,7 +296,7 @@ class kodi_dependencies {
     }
     $libjpeg = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libjpeg-dev',
-	default => 'libjpeg',
+	default => 'libjpeg-turbo',
     }
     package { "$libjpeg":
 	ensure => 'installed',
@@ -345,7 +345,7 @@ class kodi_dependencies {
     }
     $sqlite3 = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libsqlite3-dev',
-	default => 'sqlite3',
+	default => 'sqlite',
     }
     package { "$sqlite3":
 	ensure => 'installed',
