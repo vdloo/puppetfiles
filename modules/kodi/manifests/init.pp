@@ -26,7 +26,7 @@ class bootstrap_kodi {
 class configure_kodi {
     require bootstrap_kodi
     exec { 'configure kodi':
-	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec",
+	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec --disable-dvdcss",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
         environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
