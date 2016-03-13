@@ -2,9 +2,20 @@ class kodi {
     include install_kodi
 }
 
+class clean_before_bootstrap_kodi {
+    require refresh_kodi_repo
+    require kodi_dependencies
+    exec { 'clean kodi repo before bootstrapping':
+	command => "/usr/bin/git clean -xfd",
+	cwd => "/home/${::nonroot_username}/.kodi/",
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
+    }
+}
+
 class bootstrap_kodi {
     require refresh_kodi_repo
     require kodi_dependencies
+    require clean_before_bootstrap_kodi
     exec { 'bootstrap kodi':
 	command => "/home/${::nonroot_username}/.kodi/bootstrap",
 	cwd => "/home/${::nonroot_username}/.kodi/",
