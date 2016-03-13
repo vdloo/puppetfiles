@@ -37,7 +37,7 @@ class configure_kodi {
 class build_kodi {
     require configure_kodi
     exec { 'build kodi':
-	command => "/usr/bin/make -j $processorcount",
+	command => "/usr/bin/make -j 1",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
         environment => 'CPPFLAGS="-I /usr/local/x86_64-linux-gnu/include"',
