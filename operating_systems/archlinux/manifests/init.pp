@@ -23,7 +23,7 @@ class ensure_mirrorlist {
 class get_fastest_mirrors {
 	require ensure_mirrorlist
 	exec { 'rank mirrors':
-		command => '/usr/bin/rankmirrors -n 3 /home/${::nonroot_username}/.mirrorlist > /etc/pacman.d/mirrorlist',
+		command => "/usr/bin/rankmirrors -n 3 /home/${::nonroot_username}/.mirrorlist > /etc/pacman.d/mirrorlist",
 	}
 }
 
