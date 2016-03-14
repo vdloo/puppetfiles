@@ -7,7 +7,7 @@ class clean_before_bootstrap_kodi {
     require kodi_dependencies
     exec { 'clean kodi repo before bootstrapping':
 	command => "/usr/bin/git clean -xfd",
-	cwd => "/home/${::nonroot_username}/.kodi/",
+	cwd => "/usr/src/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
@@ -17,8 +17,8 @@ class bootstrap_kodi {
     require kodi_dependencies
     require clean_before_bootstrap_kodi
     exec { 'bootstrap kodi':
-	command => "/home/${::nonroot_username}/.kodi/bootstrap",
-	cwd => "/home/${::nonroot_username}/.kodi/",
+	command => "/usr/src/kodi/bootstrap",
+	cwd => "/usr/src/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
@@ -26,8 +26,8 @@ class bootstrap_kodi {
 class configure_kodi {
     require bootstrap_kodi
     exec { 'configure kodi':
-	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec --disable-dvdcss --disable-joystick --disable-libbluray --disable-nfs",
-	cwd => "/home/${::nonroot_username}/.kodi/",
+	command => "/usr/src/kodi/configure --disable-libcec --disable-dvdcss --disable-joystick --disable-libbluray --disable-nfs",
+	cwd => "/usr/src/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
         environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CFLAGS=-I/usr/local/x86_64-linux-gnu/include', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
 	timeout     => 600
@@ -38,7 +38,7 @@ class build_kodi {
     require configure_kodi
     exec { 'build kodi':
 	command => "/usr/bin/make -j $processorcount",
-	cwd => "/home/${::nonroot_username}/.kodi/",
+	cwd => "/usr/src/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
 	timeout     => 0
     }
@@ -48,13 +48,13 @@ class install_kodi {
     require build_kodi
     exec { 'install kodi':
 	command => '/usr/bin/make install',
-	cwd => "/home/${::nonroot_username}/.kodi/",
+	cwd => "/usr/src/kodi",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
 
 class clone_kodi_repo {
-    vcsrepo { "/home/${::nonroot_username}/.kodi":
+    vcsrepo { "/usr/src/kodi":
       ensure   => latest,
       provider => git,
       source => 'https://github.com/xbmc/xbmc.git',
@@ -68,7 +68,7 @@ class refresh_kodi_repo {
     require clone_kodi_repo
     exec { 'git clean kodi repo':
 	command => '/usr/bin/git clean -f',
-	cwd => "/home/${::nonroot_username}/.kodi/"
+	cwd => "/usr/src/kodi/"
     }
 }
 
@@ -84,8 +84,8 @@ class ffmpeg_dependencies {
 class bootstrap_depends {
     require refresh_kodi_repo
     exec { 'bootstrap depends':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/bootstrap",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	command => "/usr/src/kodi/tools/depends/bootstrap",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local'
     }
 }
@@ -100,8 +100,8 @@ class build_crossguid {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for crossguid':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build crossguid'],
@@ -109,7 +109,7 @@ class build_crossguid {
     }
     exec { 'build crossguid':
 	command => "/usr/bin/make -C target/crossguid",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -128,8 +128,8 @@ class build_dcadec {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for dcadec':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build dcadec'],
@@ -137,7 +137,7 @@ class build_dcadec {
     }
     exec { 'build dcadec':
 	command => "/usr/bin/make -C target/libdcadec",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -156,8 +156,8 @@ class build_cmake {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for cmake':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build cmake'],
@@ -165,7 +165,7 @@ class build_cmake {
     }
     exec { 'build cmake':
 	command => "/usr/bin/make -C native/cmake-native/",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -179,8 +179,8 @@ class build_taglib {
     require bootstrap_depends
     require build_cmake
     exec { 'configure depends for taglib':
-	command => "/home/${::nonroot_username}/.kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build taglib'],
@@ -188,7 +188,7 @@ class build_taglib {
     }
     exec { 'build taglib':
 	command => "/usr/bin/make -C target/taglib/",
-	cwd => "/home/${::nonroot_username}/.kodi/tools/depends",
+	cwd => "/usr/src/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
