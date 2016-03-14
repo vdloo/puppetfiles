@@ -1,3 +1,5 @@
+require common
+
 class htpc {
 	include htpc_flag
 	include kodi
