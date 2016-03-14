@@ -25,11 +25,18 @@ class bootstrap_kodi {
 
 class configure_kodi {
     require bootstrap_kodi
-    exec { 'configure kodi':
-	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec --disable-dvdcss",
+    exec { 'debug env vars':
+	command => "/usr/bin/env > /tmp/puppet_kodi_configure_env.txt",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
-        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
+        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CFLAGS=-I/usr/local/x86_64-linux-gnu/include', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
+	timeout     => 600
+    }
+    exec { 'configure kodi':
+	command => "/home/${::nonroot_username}/.kodi/configure --disable-libcec --disable-dvdcss --disable-joystick --disable-libbluray --disable-nfs",
+	cwd => "/home/${::nonroot_username}/.kodi/",
+	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
+        environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CFLAGS=-I/usr/local/x86_64-linux-gnu/include', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
 	timeout     => 600
     }
 }
@@ -40,7 +47,6 @@ class build_kodi {
 	command => "/usr/bin/make -j 1",
 	cwd => "/home/${::nonroot_username}/.kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
-        environment => 'CPPFLAGS="-I /usr/local/x86_64-linux-gnu/include"',
 	timeout     => 0
     }
 }
