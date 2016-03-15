@@ -53,7 +53,7 @@ class install_kodi {
     }
 }
 
-class create_usr_src {
+class ensure_user_source_directory {
     file {'/usr/src':
 	ensure => 'directory',
 	mode => '0755',
@@ -61,7 +61,7 @@ class create_usr_src {
 }
 
 class clone_kodi_repo {
-    require create_usr_src
+    require ensure_user_source_directory
     vcsrepo { "/usr/src/kodi":
       ensure   => latest,
       provider => git,
@@ -73,6 +73,7 @@ class clone_kodi_repo {
 }
 
 class refresh_kodi_repo {
+    require ensure_user_source_directory
     require clone_kodi_repo
     exec { 'git clean kodi repo':
 	command => '/usr/bin/git clean -f',
@@ -207,6 +208,9 @@ class build_taglib {
 
 
 class kodi_dependencies {
+    require ensure_user_source_directory
+    require clone_kodi_repo
+    require refresh_kodi_repo
     require ffmpeg_dependencies
     $libxslt = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libxslt-dev',
