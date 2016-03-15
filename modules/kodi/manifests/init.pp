@@ -53,7 +53,15 @@ class install_kodi {
     }
 }
 
+class create_usr_src {
+    file {'/usr/src':
+	ensure => 'directory',
+	mode => '0755',
+    }
+}
+
 class clone_kodi_repo {
+    require create_usr_src
     vcsrepo { "/usr/src/kodi":
       ensure   => latest,
       provider => git,
