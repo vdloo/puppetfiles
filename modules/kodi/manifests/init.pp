@@ -7,7 +7,7 @@ class clean_before_bootstrap_kodi {
     require kodi_dependencies
     exec { 'clean kodi repo before bootstrapping':
 	command => "/usr/bin/git clean -xfd",
-	cwd => "/usr/src/kodi/",
+	cwd => "/usr/local/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
@@ -17,8 +17,8 @@ class bootstrap_kodi {
     require kodi_dependencies
     require clean_before_bootstrap_kodi
     exec { 'bootstrap kodi':
-	command => "/usr/src/kodi/bootstrap",
-	cwd => "/usr/src/kodi/",
+	command => "/usr/local/kodi/bootstrap",
+	cwd => "/usr/local/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
@@ -26,8 +26,8 @@ class bootstrap_kodi {
 class configure_kodi {
     require bootstrap_kodi
     exec { 'configure kodi':
-	command => "/usr/src/kodi/configure --disable-libcec --disable-dvdcss --disable-joystick --disable-libbluray --disable-nfs",
-	cwd => "/usr/src/kodi/",
+	command => "/usr/local/kodi/configure --disable-libcec --disable-dvdcss --disable-joystick --disable-libbluray --disable-nfs",
+	cwd => "/usr/local/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
         environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CFLAGS=-I/usr/local/x86_64-linux-gnu/include', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
 	timeout     => 600
@@ -38,7 +38,7 @@ class build_kodi {
     require configure_kodi
     exec { 'build kodi':
 	command => "/usr/bin/make -j $processorcount",
-	cwd => "/usr/src/kodi/",
+	cwd => "/usr/local/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
 	timeout     => 0
     }
@@ -48,21 +48,13 @@ class install_kodi {
     require build_kodi
     exec { 'install kodi':
 	command => '/usr/bin/make install',
-	cwd => "/usr/src/kodi",
+	cwd => "/usr/local/kodi",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
 
-class ensure_user_source_directory {
-    file {'/usr/src':
-	ensure => 'directory',
-	mode => '0755',
-    }
-}
-
 class clone_kodi_repo {
-    require ensure_user_source_directory
-    vcsrepo { "/usr/src/kodi":
+    vcsrepo { "/usr/local/kodi":
       ensure   => latest,
       provider => git,
       source => 'https://github.com/xbmc/xbmc.git',
@@ -73,11 +65,10 @@ class clone_kodi_repo {
 }
 
 class refresh_kodi_repo {
-    require ensure_user_source_directory
     require clone_kodi_repo
     exec { 'git clean kodi repo':
 	command => '/usr/bin/git clean -f',
-	cwd => "/usr/src/kodi/"
+	cwd => "/usr/local/kodi/"
     }
 }
 
@@ -93,8 +84,8 @@ class ffmpeg_dependencies {
 class bootstrap_depends {
     require refresh_kodi_repo
     exec { 'bootstrap depends':
-	command => "/usr/src/kodi/tools/depends/bootstrap",
-	cwd => "/usr/src/kodi/tools/depends",
+	command => "/usr/local/kodi/tools/depends/bootstrap",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local'
     }
 }
@@ -109,8 +100,8 @@ class build_crossguid {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for crossguid':
-	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/usr/src/kodi/tools/depends",
+	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build crossguid'],
@@ -118,7 +109,7 @@ class build_crossguid {
     }
     exec { 'build crossguid':
 	command => "/usr/bin/make -C target/crossguid",
-	cwd => "/usr/src/kodi/tools/depends",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -137,8 +128,8 @@ class build_dcadec {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for dcadec':
-	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/usr/src/kodi/tools/depends",
+	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build dcadec'],
@@ -146,7 +137,7 @@ class build_dcadec {
     }
     exec { 'build dcadec':
 	command => "/usr/bin/make -C target/libdcadec",
-	cwd => "/usr/src/kodi/tools/depends",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -165,8 +156,8 @@ class build_cmake {
     require refresh_kodi_repo
     require bootstrap_depends
     exec { 'configure depends for cmake':
-	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/usr/src/kodi/tools/depends",
+	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build cmake'],
@@ -174,7 +165,7 @@ class build_cmake {
     }
     exec { 'build cmake':
 	command => "/usr/bin/make -C native/cmake-native/",
-	cwd => "/usr/src/kodi/tools/depends",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -188,8 +179,8 @@ class build_taglib {
     require bootstrap_depends
     require build_cmake
     exec { 'configure depends for taglib':
-	command => "/usr/src/kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/usr/src/kodi/tools/depends",
+	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	notify => Exec['build taglib'],
@@ -197,7 +188,7 @@ class build_taglib {
     }
     exec { 'build taglib':
 	command => "/usr/bin/make -C target/taglib/",
-	cwd => "/usr/src/kodi/tools/depends",
+	cwd => "/usr/local/kodi/tools/depends",
         environment => 'PREFIX=/usr/local',
 	timeout     => 600,
 	refreshonly => true,
@@ -208,7 +199,6 @@ class build_taglib {
 
 
 class kodi_dependencies {
-    require ensure_user_source_directory
     require clone_kodi_repo
     require refresh_kodi_repo
     require ffmpeg_dependencies
