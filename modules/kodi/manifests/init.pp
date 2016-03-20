@@ -5,6 +5,7 @@ class kodi {
 class clean_before_bootstrap_kodi {
     require refresh_kodi_repo
     require kodi_dependencies
+    require kodi_bundled_dependencies
     exec { 'clean kodi repo before bootstrapping':
 	command => "/usr/bin/git clean -xfd",
 	cwd => "/usr/local/kodi/",
@@ -15,10 +16,12 @@ class clean_before_bootstrap_kodi {
 class bootstrap_kodi {
     require refresh_kodi_repo
     require kodi_dependencies
+    require kodi_bundled_dependencies
     require clean_before_bootstrap_kodi
     exec { 'bootstrap kodi':
 	command => "/usr/local/kodi/bootstrap",
 	cwd => "/usr/local/kodi/",
+        user => $::nonroot_username,
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi'
     }
 }
@@ -53,7 +56,16 @@ class install_kodi {
     }
 }
 
+class ensure_usr_local {
+    file {'/usr/local':
+        ensure => 'directory',
+        mode => '0755',
+        owner => $::nonroot_username
+    }
+}
+
 class clone_kodi_repo {
+    require ensure_usr_local
     vcsrepo { "/usr/local/kodi":
       ensure   => latest,
       provider => git,
@@ -68,7 +80,8 @@ class refresh_kodi_repo {
     require clone_kodi_repo
     exec { 'git clean kodi repo':
 	command => '/usr/bin/git clean -f',
-	cwd => "/usr/local/kodi/"
+	cwd => "/usr/local/kodi/",
+        user => $::nonroot_username
     }
 }
 
@@ -99,6 +112,7 @@ class install_crossguid {
 class build_crossguid {
     require refresh_kodi_repo
     require bootstrap_depends
+    require kodi_dependencies
     exec { 'configure depends for crossguid':
 	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/usr/local/kodi/tools/depends",
@@ -127,6 +141,7 @@ class install_dcadec {
 class build_dcadec {
     require refresh_kodi_repo
     require bootstrap_depends
+    require kodi_dependencies
     exec { 'configure depends for dcadec':
 	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/usr/local/kodi/tools/depends",
@@ -178,6 +193,7 @@ class build_taglib {
     require refresh_kodi_repo
     require bootstrap_depends
     require build_cmake
+    require kodi_dependencies
     exec { 'configure depends for taglib':
 	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
 	cwd => "/usr/local/kodi/tools/depends",
@@ -202,6 +218,7 @@ class kodi_dependencies {
     require clone_kodi_repo
     require refresh_kodi_repo
     require ffmpeg_dependencies
+    include kodi_bundled_dependencies
     $libxslt = $operatingsystem ? {
 	/^(Debian|Ubuntu)$/ => 'libxslt-dev',
 	default => 'libxslt',
@@ -414,19 +431,23 @@ class kodi_dependencies {
     package { $kodi_deps: 
 	ensure => 'installed',
     }
+}
+
+class kodi_bundled_dependencies {
+    require kodi_dependencies
     case $operatingsystem {
-	'Archlinux': 	{ include install_crossguid }
-	'Debian':	{ include build_crossguid }
-	'Ubuntu':	{ include build_crossguid }
+	'Archlinux': 	{ require install_crossguid }
+	'Debian':	{ require build_crossguid }
+	'Ubuntu':	{ require build_crossguid }
     }
     case $operatingsystem {
-	'Archlinux': 	{ include install_dcadec }
-	'Debian':	{ include build_dcadec }
-	'Ubuntu':	{ include build_dcadec }
+	'Archlinux': 	{ require install_dcadec }
+	'Debian':	{ require build_dcadec }
+	'Ubuntu':	{ require build_dcadec }
     }
     case $operatingsystem {
-	'Archlinux': 	{ include install_taglib }
-	'Debian':	{ include build_taglib }
-	'Ubuntu':	{ include build_taglib }
+	'Archlinux': 	{ require install_taglib }
+	'Debian':	{ require build_taglib }
+	'Ubuntu':	{ require build_taglib }
     }
 }
