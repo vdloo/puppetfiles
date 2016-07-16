@@ -6,5 +6,5 @@ else
 	hieraconfig="$dirname/hiera/hiera.yaml"
 	base=$(puppet master --configprint modulepath);
 	modulepath="$base:$dirname/modules:$dirname/roles:$dirname/operating_systems" 
-	puppet apply --modulepath="$modulepath" --hiera_config=$hieraconfig "$@"; 
+	puppet apply --verbose --debug --modulepath="$modulepath" --hiera_config=$hieraconfig "$@"; 
 fi
