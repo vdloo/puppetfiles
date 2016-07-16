@@ -44,6 +44,7 @@ class default_packages {
 	'make',
 	'htop',
 	'iftop',
+	'task',
 	'irssi',
 	'ctags',
         'git',
