@@ -33,7 +33,7 @@ class configure_kodi {
 	cwd => "/usr/local/kodi/",
 	onlyif => '/usr/bin/test ! -x /usr/local/bin/kodi',
         environment => ['PYTHON_VERSION=2', 'PKG_CONFIG_PATH=/usr/local/x86_64-linux-gnu/lib/pkgconfig/', 'CFLAGS=-I/usr/local/x86_64-linux-gnu/include', 'CXXFLAGS=-I/usr/local/x86_64-linux-gnu/include', "LDFLAGS=-L/usr/local/x86_64-linux-gnu/lib -lcrossguid"],
-	timeout     => 600
+	timeout     => 0
     }
 }
 
