@@ -47,7 +47,7 @@ class fetch_patches {
 	execuser => $::nonroot_username,
     }
     wget::fetch { 'download dwm gapless_grid patch':
-        source => 'http://dwm.suckless.org/patches/dwm-6.1-gaplessgrid.diff',
+        source => 'http://dwm.suckless.org/patches/dwm-gaplessgrid-6.1.diff',
 	destination => "/home/${::nonroot_username}/.dwm/gapless_grid.diff",
 	timeout => 0,
 	verbose => false,
