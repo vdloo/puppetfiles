@@ -8,6 +8,7 @@ class common {
 	include update_puppetfiles
         include common_flag
         include docker
+        include locales
 }
 
 class os {
@@ -23,6 +24,30 @@ class default_password {
 	ensure => present,
 	shell => '/bin/bash',
 	password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
+    }
+}
+
+class locales {
+    file {
+      "/etc/locale.gen":
+        mode    => '0644',
+        content => 'en_US.UTF-8 UTF-8',
+        notify  => Exec['generate-locales'];
+    }
+    file {
+      "/etc/default/locale":
+        mode    => '0644',
+        content => "LANGUAGE=en_US:en\nLANG=en_US.UTF-8\nLC_ALL=en_US.UTF-8\n";
+    }
+    package {
+      'locales':
+        ensure  => installed;
+    }
+    exec {
+      'generate-locales':
+        command  => '/usr/sbin/locale-gen',
+        user     => root,
+        require  => Package['locales'];
     }
 }
 
