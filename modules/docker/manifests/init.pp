@@ -9,7 +9,7 @@ class docker {
             alias => 'docker'
         }
         service { "docker": 
-            enabled => true,
+            enable => true,
             ensure => running
         }
     }
