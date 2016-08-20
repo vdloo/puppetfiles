@@ -7,6 +7,7 @@ class common {
 	include default_password
 	include update_puppetfiles
         include common_flag
+        include docker
 }
 
 class os {
