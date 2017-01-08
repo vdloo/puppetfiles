@@ -227,8 +227,8 @@ class kodi_dependencies {
 	ensure => 'installed',
     }
     $openjdk = $operatingsystem ? {
-	/^(Debian|Ubuntu)$/ => 'openjdk-7-jdk',
-	default => 'jre7-openjdk',
+	/^(Debian|Ubuntu)$/ => 'openjdk-8-jdk',
+	default => 'jre8-openjdk',
     }
     package { "$openjdk":
 	ensure => 'installed',
