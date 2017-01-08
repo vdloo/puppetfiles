@@ -1,5 +1,6 @@
 require common
 
 class htpc {
-	include kodi
+    include autologin
+    include kodi
 }
