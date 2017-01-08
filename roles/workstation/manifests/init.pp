@@ -7,12 +7,5 @@ class workstation {
 	if $operatingsystem == 'Archlinux' {
 	    include autologin
 	}
-	include workstation_flag
 }
 
-class workstation_flag {
-	file {'/usr/etc/machineconf/workstation':
-	    mode => '0644',
-	    ensure => 'present',
-	}
-}

@@ -1,6 +1,5 @@
 class common {
 	require default_packages
-        require machine_settings_directory
 	include nonroot
 	include dotfiles
 	include vim	
@@ -91,20 +90,3 @@ class update_puppetfiles {
     }
 }
 
-class machine_settings_directory {
-	file {'/usr/etc':
-	    ensure => 'directory',
-	    mode => '0755',
-	}
-	file {'/usr/etc/machineconf':
-	    ensure => 'directory',
-	    mode => '0755',
-	}
-}
-
-class common_flag {
-	file {'/usr/etc/machineconf/common':
-	    mode => '0644',
-	    ensure => 'present',
-	}
-}
