@@ -67,7 +67,8 @@ class ensure_usr_local {
 class clone_kodi_repo {
     require ensure_usr_local
     vcsrepo { "/usr/local/kodi":
-      ensure   => latest,
+      ensure   => present,
+      revision => '17.0rc2-Krypton',
       provider => git,
       source => 'https://github.com/xbmc/xbmc.git',
       user => $::nonroot_username,
@@ -135,29 +136,6 @@ class build_crossguid {
 class install_dcadec {
     package { "dcadec":
 	ensure => 'installed',
-    }
-}
-
-class build_dcadec {
-    require refresh_kodi_repo
-    require bootstrap_depends
-    require kodi_dependencies
-    exec { 'configure depends for dcadec':
-	command => "/usr/local/kodi/tools/depends/configure --prefix=/usr/local",
-	cwd => "/usr/local/kodi/tools/depends",
-        environment => 'PREFIX=/usr/local',
-	timeout     => 600,
-	notify => Exec['build dcadec'],
-	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/dcadec'
-    }
-    exec { 'build dcadec':
-	command => "/usr/bin/make -C target/libdcadec",
-	cwd => "/usr/local/kodi/tools/depends",
-        environment => 'PREFIX=/usr/local',
-	timeout     => 600,
-	refreshonly => true,
-        require => Exec['configure depends for dcadec'],
-	onlyif => '/usr/bin/test ! -f /usr/local/x86_64-linux-gnu/bin/dcadec'
     }
 }
 
@@ -442,8 +420,6 @@ class kodi_bundled_dependencies {
     }
     case $operatingsystem {
 	'Archlinux': 	{ require install_dcadec }
-	'Debian':	{ require build_dcadec }
-	'Ubuntu':	{ require build_dcadec }
     }
     case $operatingsystem {
 	'Archlinux': 	{ require install_taglib }
