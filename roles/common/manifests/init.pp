@@ -23,7 +23,6 @@ class default_password {
     user { 'root':
 	ensure => present,
 	shell => '/bin/bash',
-	password => '$6$crTDL9oLSa$oevTiFwJwzcUtgyh.ICwl78ZVQ8DoKT2gP4LuX9DmbWF.YRsPTny8EcLW6ATrpQf6MXfA5BZeGO92f0gl0nK7/',  #toor
     }
 }
 
