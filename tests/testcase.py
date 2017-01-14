@@ -41,7 +41,7 @@ class TestCase(unittest.TestCase):
         spawn_server_command = [
             'raptiformica', 'spawn', '--server-type',
             server_type, '--compute-type', compute_type,
-            '--cache-dir', cache_dir, '--no-after-assimilate'
+            '--cache-dir', cache_dir
         ]
         check_call(spawn_server_command)
 
