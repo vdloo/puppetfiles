@@ -4,7 +4,7 @@
     "headless": {
       "puppetfiles": {
         "source": "https://github.com/vdloo/puppetfiles",
-        "bootstrap": "./papply.sh manifests/headless.pp"
+        "bootstrap": "cd provisioning && ./papply.sh manifests/headless.pp"
       }
     }
   }
