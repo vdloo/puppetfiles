@@ -1,7 +1,7 @@
 import json
 import unittest
 from contextlib import contextmanager
-from os.path import join, dirname, realpath, expanduser
+from os.path import join, dirname, realpath, expanduser, basename
 from subprocess import check_call, check_output
 from uuid import uuid4
 
@@ -72,8 +72,10 @@ class TestCase(unittest.TestCase):
         )
 
     def run_local_integration(self, cache_dir):
-        integration_test_command = '"cd /root/{}/modules/puppetfiles && ' \
-                                   './runtests.sh -1l"'.format(cache_dir)
+        integration_test_command = '"cd /root/{}/modules/{} && ' \
+                                   './runtests.sh -1l"' \
+                                   ''.format(cache_dir,
+                                             basename(self.project_dir))
         self.run_command_in_instance(
             cache_dir, integration_test_command
         )
