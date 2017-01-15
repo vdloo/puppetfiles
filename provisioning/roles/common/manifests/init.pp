@@ -5,7 +5,6 @@ class common {
 	include vim	
 	include default_password
 	include update_puppetfiles
-        include docker
         include locales
 }
 
