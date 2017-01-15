@@ -6,6 +6,18 @@
                 "bootstrap": "cd provisioning && ./papply.sh manifests/headless.pp",
                 "source": "https://github.com/vdloo/puppetfiles"
             }
+        },
+        "workstation": {
+            "puppetfiles": {
+                "bootstrap": "cd provisioning && ./papply.sh manifests/workstation.pp",
+                "source": "https://github.com/vdloo/puppetfiles"
+            }
+        },
+        "htpc": {
+            "puppetfiles": {
+                "bootstrap": "cd provisioning && ./papply.sh manifests/htpc.pp",
+                "source": "https://github.com/vdloo/puppetfiles"
+            }
         }
     }
 }

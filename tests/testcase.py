@@ -86,9 +86,10 @@ class TestCase(unittest.TestCase):
             config_file = join(self.project_dir, 'raptiformica.json')
             with open(config_file, 'r') as f:
                 config = json.load(f)
-                config['server']['headless']['puppetfiles'][
-                    'source'
-                ] = source
+                for server_type in config['server'].keys():
+                    config['server'][server_type]['puppetfiles'][
+                        'source'
+                    ] = source
             with open(config_file, 'w') as f:
                 json.dump(config, f, indent=4, sort_keys=True)
 
