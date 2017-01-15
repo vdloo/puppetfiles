@@ -1,11 +1,11 @@
 {
-  "raptiformica_api_version": "0.1",
-  "server": {
-    "headless": {
-      "puppetfiles": {
-        "source": "https://github.com/vdloo/puppetfiles",
-        "bootstrap": "cd provisioning && ./papply.sh manifests/headless.pp"
-      }
+    "raptiformica_api_version": "0.1",
+    "server": {
+        "headless": {
+            "puppetfiles": {
+                "bootstrap": "cd provisioning && ./papply.sh manifests/headless.pp",
+                "source": "https://github.com/vdloo/puppetfiles"
+            }
+        }
     }
-  }
 }
