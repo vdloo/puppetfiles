@@ -5,7 +5,6 @@ if [ ! -d venv ]; then
     virtualenv venv
 fi
 
-venv/bin/pip install distribute --upgrade --quiet  # Update distribute
 venv/bin/pip install -r requirements/development.txt --exists-action w --quiet
 
 while getopts "1il" opt; do
