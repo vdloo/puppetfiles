@@ -23,11 +23,12 @@ class TestCase(unittest.TestCase):
     @contextmanager
     def temp_config_dir(self):
         temp_config_dir = '.raptiformica.test.{}'.format(uuid4().hex)
+        absolute_temp_config_dir = join(expanduser("~"), temp_config_dir)
         try:
-            makedirs(join(expanduser("~"), temp_config_dir))
+            makedirs(absolute_temp_config_dir)
             yield temp_config_dir
         finally:
-            rmtree(temp_config_dir, ignore_errors=True)
+            rmtree(absolute_temp_config_dir, ignore_errors=True)
 
     def install_raptiformica_module(self, cache_dir, module_name):
         install_module_command = [
