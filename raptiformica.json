@@ -11,12 +11,20 @@
             "puppetfiles": {
                 "bootstrap": "cd provisioning && ./papply.sh manifests/workstation.pp",
                 "source": "https://github.com/vdloo/puppetfiles"
+            },
+            "raptiformica_default_provisioner": {
+                "source": "file:///usr/etc/raptiformica",
+                "bootstrap": "cd $HOME; export PYTHONPATH=/usr/etc/raptiformica_default_provisioner; /usr/etc/raptiformica_default_provisioner/modules/server/deploy.py"
             }
         },
         "htpc": {
             "puppetfiles": {
                 "bootstrap": "cd provisioning && ./papply.sh manifests/htpc.pp",
                 "source": "https://github.com/vdloo/puppetfiles"
+            },
+            "raptiformica_default_provisioner": {
+                "source": "file:///usr/etc/raptiformica",
+                "bootstrap": "cd $HOME; export PYTHONPATH=/usr/etc/raptiformica_default_provisioner; /usr/etc/raptiformica_default_provisioner/modules/server/deploy.py"
             }
         }
     }
