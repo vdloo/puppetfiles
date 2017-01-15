@@ -5,7 +5,6 @@ if [ ! -d venv ]; then
     virtualenv venv
 fi
 
-venv/bin/pip install distribute --upgrade --quiet  # Update distribute
 venv/bin/pip install -r requirements/development.txt --exists-action w --quiet
 
 while getopts "1il" opt; do
@@ -18,8 +17,8 @@ done
 
 [ -z $INTEGRATION ] && TEST_SUITE="unit" || TEST_SUITE="integration"
 [ -z $LOCAL ] || TEST_SUITE="integration_local"
-[ -z $INTEGRATION ] && TIME_OUT="--process-timeout=30" || TIME_OUT="--process-timeout=1200"
-[ -z $LOCAL ] || TIME_OUT="--process-timeout=3600"
+[ -z $INTEGRATION ] && TIME_OUT="--process-timeout=30" || TIME_OUT="--process-timeout=3600"
+[ -z $LOCAL ] || TIME_OUT="--process-timeout=1200"
 
 # Do not use the nose.proxy otherwise we can't run Popen with unbuffered output
 # fixes: nose.proxy.AttributeError: '_io.StringIO' object has no attribute 'buffer'
