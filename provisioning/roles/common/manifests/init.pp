@@ -24,6 +24,7 @@ class default_password {
 }
 
 class locales {
+    require decide_locales_package_needed
     file {
       "/etc/locale.gen":
         mode    => '0644',
@@ -35,15 +36,24 @@ class locales {
         mode    => '0644',
         content => "LANGUAGE=en_US:en\nLANG=en_US.UTF-8\nLC_ALL=en_US.UTF-8\n";
     }
-    package {
-      'locales':
-        ensure  => installed;
-    }
     exec {
       'generate-locales':
         command  => '/usr/sbin/locale-gen',
         user     => root,
-        require  => Package['locales'];
+    }
+}
+
+class decide_locales_package_needed {
+    case $operatingsystem {
+	'Debian':	{ require locales_package }
+	'Ubuntu':	{ require locales_package }
+    }
+}
+
+class locales_package {
+    package {
+      'locales':
+        ensure  => installed;
     }
 }
 
