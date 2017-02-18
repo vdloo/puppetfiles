@@ -9,7 +9,7 @@ include htpc_cron
 
 class htpc_cron {
     cron { "puppet apply":
-        command => "/usr/etc/puppetfiles/papply.sh /usr/etc/puppetfiles/manifests/htpc.pp",
+        command => "/usr/etc/puppetfiles/provisioning/papply.sh /usr/etc/puppetfiles/provisioning/manifests/htpc.pp",
         user    => "root",
         hour    => 0,
         minute  => 15
