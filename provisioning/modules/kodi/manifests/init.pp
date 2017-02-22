@@ -68,7 +68,7 @@ class clone_kodi_repo {
     require ensure_usr_local
     vcsrepo { "/usr/local/kodi":
       ensure   => present,
-      revision => '17.0rc2-Krypton',
+      revision => '17.0-Krypton',
       provider => git,
       source => 'https://github.com/xbmc/xbmc.git',
       user => $::nonroot_username,
