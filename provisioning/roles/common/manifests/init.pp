@@ -28,7 +28,7 @@ class locales {
     file {
       "/etc/locale.gen":
         mode    => '0644',
-        content => 'en_US.UTF-8 UTF-8',
+        content => "en_US.UTF-8 UTF-8\n",
         notify  => Exec['generate-locales'];
     }
     file {
