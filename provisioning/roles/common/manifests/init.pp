@@ -76,6 +76,7 @@ class default_packages {
 	'make',
 	'htop',
 	'iftop',
+	'sysstat',
 	'task',
 	'irssi',
 	'ctags',
